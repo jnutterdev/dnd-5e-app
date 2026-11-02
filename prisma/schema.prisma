@@ -1,0 +1,183 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ------------------------------------------------------
+// User & Auth Models (Compatible with Auth.js / NextAuth)
+// ------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  // App Specific Relations
+  characters        Character[]
+  createdCampaigns Campaign[]        @relation("DMCampaigns")
+  campaignMembers   CampaignMember[]
+  notes             CampaignNote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ------------------------------------------------------
+// D&D Core App Models
+// ------------------------------------------------------
+
+model Character {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Campaign Association (Optional - a character can exist without a campaign)
+  campaignId String?
+  campaign   Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  // Basic Information
+  name        String
+  race        String
+  subrace     String?
+  class       String
+  archetype   String? // e.g., Evocation Wizard, Circle of the Moon
+  level       Int     @default(1)
+  alignment   String?
+  background  String?
+  avatarUrl   String?
+
+  // Stats & Combat State
+  maxHp       Int
+  currentHp   Int
+  tempHp      Int     @default(0)
+  armorClass  Int
+  speed       Int     @default(30)
+  proficiencyBonus Int @default(2)
+
+  // JSON Data Structures for Flexibility
+  // abilityScores: { str: 15, dex: 14, con: 13, int: 12, wis: 10, cha: 8 }
+  abilityScores Json
+
+  // savingThrows / skills: ["perception", "stealth"]
+  proficientSkills Json @default("[]")
+  savingThrowProficiencies Json @default("[]")
+
+  // spellSlots: { level1: { total: 4, used: 1 }, level2: { total: 2, used: 0 } }
+  spellSlots Json @default("{}")
+
+  // inventory: Array of item objects [{ name: "Longsword", quantity: 1, equipped: true }]
+  inventory Json @default("[]")
+
+  // Notes & Lore
+  backstory   String? @db.Text
+  personality String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([campaignId])
+}
+
+enum Role {
+  DM
+  PLAYER
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  inviteCode  String   @unique // 6-character unique join code
+
+  // DM / Creator
+  dmId String
+  dm   User   @relation("DMCampaigns", fields: [dmId], references: [id], onDelete: Cascade)
+
+  // Members & Characters
+  members    CampaignMember[]
+  characters Character[]
+  notes      CampaignNote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dmId])
+  @@index([inviteCode])
+}
+
+model CampaignMember {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @default(PLAYER)
+
+  joinedAt   DateTime @default(now())
+
+  @@unique([campaignId, userId])
+}
+
+model CampaignNote {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  authorId   String
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  title     String
+  content   Json     // TipTap / BlockNote JSON format for rich text
+  isDmOnly  Boolean  @default(false) // Secrets / DM-only view filter
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([campaignId])
+  @@index([authorId])
+}
