@@ -11,15 +11,15 @@ export default function Navigation() {
   ];
 
   const navLinks = links.map(link =>
-    <li key={link.href}><Link href={ link.href }>{ link.label }</Link></li>
+    <Link key={link.href}  href={link.href} className="py-3 px-4 inline-flex items-center gap-2 bg-layer
+      text-sm text-layer-foreground font-medium rounded-lg shadow-2xs focus:outline-hidden">{link.label}</Link>
   )
 
   return (
-    <nav className="nav">
-      <p>These are my links and what not</p>
-      <ul>
+    <div className="flex bg-surface hover:bg-surface-hover rounded-lg p-1">
+      <nav className="flex gap-x-2">
         { navLinks }
-      </ul>
-    </nav>
+      </nav>
+    </div>
   );
 }
