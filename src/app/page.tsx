@@ -1,4 +1,6 @@
 import Hero from "@/components/hero"
+import CampaignCard from "@/components/campaigncard";
+import FellowshipCard from "@/components/fellowshipcard";
 
 export default function Home() {
   return (
@@ -7,6 +9,8 @@ export default function Home() {
         <Hero />
         <p>Woke up dead. Ended up in Sigil.</p>
       </main>
+      <CampaignCard />
+      <FellowshipCard />
       </div>
   );
 }
