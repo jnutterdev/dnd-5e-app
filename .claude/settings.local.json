@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm -v)",
+      "Bash(corepack --version)",
+      "Bash(/Users/john/Library/pnpm/bin/pnpm -v)",
+      "Bash(brew info *)",
+      "Bash(brew list *)",
+      "Bash(java -version)",
+      "Bash(/usr/libexec/java_home -V)",
+      "Bash(which brew *)"
+    ]
+  }
+}
