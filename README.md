@@ -75,7 +75,7 @@ dnd-5e-app/
 │   │   ├── session-entry.tsx # 2-digit numeral timeline entry
 │   │   └── page-header.tsx # Standardized banner header with breadcrumbs
 │   └── lib/
-│       ├── prisma.ts       # Prisma Client singleton
+│       ├── prisma.ts       # Prisma Client singleton (Neon adapter)
 │       └── utils.ts        # Class merging utilities (cn)
 ├── prisma7.config.ts       # Prisma CLI config (schema path, migrations, DATABASE_URL)
 ├── next.config.ts          # Next.js runtime configuration
@@ -118,7 +118,7 @@ doppler setup # Select project: emberfall-keep, config: dev
 pnpm dev:doppler
 ```
 
-Secrets in Doppler: `DATABASE_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`.
+Secrets in Doppler: `DATABASE_URL`, `DIRECT_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`.
 
 ### 3. Database (Neon)
 
@@ -129,7 +129,12 @@ The database is the `emberfall-keep` project on Neon (AWS us-east-1, Postgres 18
 | `main`      | Production  | `prd`          |
 | `dev`       | Development | `dev`          |
 
-`DATABASE_URL` should be the **direct** (non-pooled) connection string, since Prisma Migrate needs a direct connection.
+Two connection strings per environment:
+
+- `DATABASE_URL`: **pooled** connection (host contains `-pooler`), used by the app at runtime.
+- `DIRECT_URL`: **direct** connection, used by the Prisma CLI (`prisma7.config.ts`) for migrations.
+
+The Prisma Client is generated into `src/generated/prisma` (gitignored) by `pnpm install` (postinstall) or `pnpm prisma generate`. Import it via `@/lib/prisma`.
 
 ```bash
 # Generate Prisma Client

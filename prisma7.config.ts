@@ -1,4 +1,5 @@
-// DATABASE_URL is injected by Doppler (`doppler run -- ...`); there is no .env file.
+// Injected by Doppler (`doppler run -- ...`). The CLI uses the direct (non-pooled) URL;
+// the app uses the pooled DATABASE_URL in src/lib/prisma.ts.
 import { defineConfig } from "prisma/config";
 
 export default defineConfig({
@@ -7,6 +8,6 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: process.env["DIRECT_URL"],
   },
 });
