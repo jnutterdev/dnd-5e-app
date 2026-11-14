@@ -17,6 +17,7 @@ Designed and crafted by **[ashtephra](https://ashtephra.com)**, an independent w
 | **Styling**         | [Tailwind CSS v4](https://tailwindcss.com/) with native `@theme inline` design tokens                             |
 | **UI Components**   | [shadcn/ui](https://ui.shadcn.com/) + Custom Medieval Tome components                                             |
 | **Database & ORM**  | [PostgreSQL](https://www.postgresql.org/) + [Prisma ORM 7](https://www.prisma.io/)                                |
+| **Secrets Ops**     | [Doppler](https://www.doppler.com/) (cross-machine secret injection & Cloudflare sync)                            |
 | **Typography**      | Cinzel Decorative, Cinzel, IM Fell English, Almendra SC ([Bunny Fonts](https://fonts.bunny.net/))                 |
 | **Iconography**     | [Font Awesome 6.5](https://fontawesome.com/) (fantasy flavor) + [Lucide React](https://lucide.dev/) (UI controls) |
 | **Authentication**  | Auth.js / NextAuth (Discord OAuth with Player & Admin roles)                                                      |
@@ -86,7 +87,8 @@ dnd-5e-app/
 
 - [Node.js](https://nodejs.org/) `>= 20.x`
 - [pnpm](https://pnpm.io/) `>= 9.x`
-- [PostgreSQL](https://www.postgresql.org/) database instance (local or hosted via Neon, Supabase, etc.)
+- [PostgreSQL](https://www.postgresql.org/) database instance
+- [Doppler CLI](https://docs.doppler.com/docs/install-cli) (recommended for secrets management across machines)
 
 ### 1. Clone & Install Dependencies
 
@@ -96,33 +98,62 @@ cd dnd-5e-app
 pnpm install
 ```
 
-### 2. Environment Configuration
+### 2. Environment & Secrets Setup
 
-Create a `.env` file in the root directory:
+#### Option A: Doppler (Recommended)
+
+Doppler injects secrets directly into memory across macOS, Linux, and Cloudflare Pages:
+
+```bash
+# 1. Install Doppler CLI (macOS)
+brew install dopplerhq/cli/doppler
+
+# 2. Authenticate & link repository
+doppler login
+doppler setup # Select project: dnd-5e-app, config: dev
+
+# 3. Start local development with injected secrets
+pnpm dev:doppler
+```
+
+#### Option B: Standalone `.env` File
+
+Alternatively, create a `.env` file in the root directory:
 
 ```env
 DATABASE_URL="postgresql://username:password@localhost:5432/dnd_db?schema=public"
 
-# NextAuth / Auth.js (Optional for local UI dev)
+# NextAuth / Auth.js
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-development-secret-here"
 DISCORD_CLIENT_ID="your-discord-client-id"
 DISCORD_CLIENT_SECRET="your-discord-client-secret"
 ```
 
-### 3. Database Migration & Client Generation
+### 3. Database Migration & Prisma Commands
+
+When using Doppler, convenient script aliases are available so you don't need a local `.env`:
 
 ```bash
-# Push schema or run migrations
-pnpm prisma db push
-
 # Generate Prisma Client
 pnpm prisma generate
+
+# Run migrations with Doppler injected credentials
+pnpm db:migrate
+
+# Open Prisma Studio web dashboard
+pnpm db:studio
 ```
+
+_(Without Doppler, you can use standard `pnpm prisma migrate dev` and `pnpm prisma studio`)._
 
 ### 4. Run Development Server
 
 ```bash
+# With Doppler
+pnpm dev:doppler
+
+# Or standard Next.js dev server
 pnpm dev
 ```
 
