@@ -4,8 +4,9 @@ import Footer from "@/components/footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "Emberfall Keep",
-    description: "An app to manage the custom homebrew d&d 5e game.",
+    title: "Emberfall Keep — D&D 5e Campaign Platform",
+    description:
+        "A living tome for Dungeons & Dragons campaigns, character sheets, chronicles, and world lore. Designed and built by ashtephra.",
 };
 
 export default function RootLayout({

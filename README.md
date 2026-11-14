@@ -4,7 +4,7 @@
 
 Emberfall Keep is a dedicated web platform for managing Dungeons & Dragons 5e campaigns, interactive character sheets with live combat states, session chronicles, and an indexed compendium of world lore, pantheon, bestiary, and cosmology.
 
-Designed as a living medieval tome, the app pairs a rich atmospheric print aesthetic with a fast, modern reactive web stack.
+Designed and crafted by **[ashtephra](https://ashtephra.com)**, an independent web studio run by John Nutter, the app pairs a living medieval tome aesthetic with a fast, modern reactive web stack.
 
 ---
 
@@ -12,6 +12,7 @@ Designed as a living medieval tome, the app pairs a rich atmospheric print aesth
 
 | Layer               | Technology                                                                                                        |
 | :------------------ | :---------------------------------------------------------------------------------------------------------------- |
+| **Studio**          | [ashtephra](https://ashtephra.com) (Design & Architecture)                                                        |
 | **Framework**       | [Next.js 16](https://nextjs.org/) (App Router, Turbopack, React 19)                                               |
 | **Styling**         | [Tailwind CSS v4](https://tailwindcss.com/) with native `@theme inline` design tokens                             |
 | **UI Components**   | [shadcn/ui](https://ui.shadcn.com/) + Custom Medieval Tome components                                             |
@@ -65,7 +66,7 @@ dnd-5e-app/
 │   │   └── icon-compare/   # Side-by-side FontAwesome vs. Lucide design showcase
 │   ├── components/
 │   │   ├── nav.tsx         # Sticky glass navigation with EK monogram and mobile drawer
-│   │   ├── footer.tsx      # Site footer with brand motto
+│   │   ├── footer.tsx      # Site footer with brand motto & ashtephra studio credit
 │   │   ├── hero.tsx        # Atmospheric hero with concentric sigil seal
 │   │   ├── campaigncard.tsx# Campaign status card with session and rule meta
 │   │   ├── fellowshipcard.tsx # Character portrait card with sepia/grayscale treatment
@@ -129,6 +130,8 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## License
+## Colophon & Studio
 
-Private & proprietary — created for the Emberfall Keep fellowship.
+Designed and crafted by **[ashtephra](https://ashtephra.com)**, an independent web studio run by John Nutter.
+
+In Omnia Paratus &middot; Est. 2026

@@ -58,8 +58,20 @@ export default function Footer() {
                     </a>
                 </li>
             </ul>
-            <p className="font-['Cinzel'] text-[9px] tracking-[0.2em] uppercase text-[#807868] m-0">
-                In Omnia Paratus &middot; Est. 2026
+            <p className="font-['Cinzel'] text-[9px] tracking-[0.18em] uppercase text-[#807868] m-0 flex flex-wrap items-center justify-center gap-2">
+                <span>In Omnia Paratus &middot; Est. 2026</span>
+                <span>&middot;</span>
+                <span>
+                    Designed &amp; built by{" "}
+                    <a
+                        href="https://ashtephra.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#b8b098] hover:text-[#ddd4b0] transition-colors underline underline-offset-2 font-semibold"
+                    >
+                        ashtephra
+                    </a>
+                </span>
             </p>
         </footer>
     );
