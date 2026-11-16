@@ -42,9 +42,9 @@ The user interface follows the **Emberfall Keep Design Tokens**, evoking weather
 ## Architecture
 
 - **Unified Database (Zero External CMS):**
-    - **Characters:** Players log in via Discord to edit and maintain their own character sheets (HP, spell slots, inventory, ability scores) with automatic ownership validation.
-    - **Campaigns & Chronicles:** DMs track party rosters, invite codes, and session notes (with DM-only secret visibility filters).
-    - **The Compendium:** World lore, factions, bestiary, and pantheon articles live in PostgreSQL and can be edited inline by administrators (`role: ADMIN`).
+    - **Characters:** Players log in via Discord to edit and maintain their own character sheets (HP, spell slots, inventory, ability scores) with automatic ownership validation. Characters support multiclassing, and their status (active, dead, retired) is set by the DM or an admin.
+    - **Campaigns & Chronicles:** DMs track party rosters, invite codes, and campaign status (planning, active, finished). Each game session can hold multiple notes, each either player-visible or DM-only.
+    - **The Compendium:** Each campaign has its own world lore, factions, bestiary, and pantheon articles. Entries start as unpublished drafts and can be edited by the campaign's DM or an administrator (`role: ADMIN`).
 
 ---
 
