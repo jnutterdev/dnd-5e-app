@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import UserMenu from "@/components/user-menu";
 
 interface NavLink {
     href: string;
@@ -66,51 +67,55 @@ export default function Navigation() {
                     <span>Emberfall Keep</span>
                 </Link>
 
-                {/* Mobile Toggle Button */}
-                <button
-                    type="button"
-                    onClick={() => setIsOpen((prev) => !prev)}
-                    className="lg:hidden text-[#b8b098] hover:text-[#ddd4b0] p-2 focus:outline-none"
-                    aria-expanded={isOpen}
-                    aria-label="Toggle navigation menu"
-                >
-                    <i
-                        className={`fa-solid ${isOpen ? "fa-xmark" : "fa-bars"} text-lg`}
-                    ></i>
-                </button>
+                <div className="flex items-center gap-3">
+                    {/* Desktop Links */}
+                    <nav className="hidden lg:flex items-center">
+                        <ul className="flex items-center gap-1 list-none m-0 p-0">
+                            {navLinks.map((link) => {
+                                const active = isActive(link.href);
+                                return (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            className={`font-['Cinzel'] text-[10px] tracking-[0.15em] uppercase px-3.5 py-1.5 transition-colors whitespace-nowrap block ${
+                                                active
+                                                    ? "text-[#ddd4b0] font-semibold"
+                                                    : "text-[#9a8c7e] hover:text-[#ddd4b0]"
+                                            }`}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                );
+                            })}
+                            <li>
+                                <a
+                                    href="https://discord.gg/dTRaBUNY"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="font-['Cinzel'] text-[10px] tracking-[0.15em] uppercase px-3.5 py-1.5 transition-colors whitespace-nowrap text-[#7289da] hover:text-[#99aaf0] flex items-center gap-1.5"
+                                >
+                                    <i className="fa-brands fa-discord"></i> Discord
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
 
-                {/* Desktop Links */}
-                <nav className="hidden lg:flex items-center">
-                    <ul className="flex items-center gap-1 list-none m-0 p-0">
-                        {navLinks.map((link) => {
-                            const active = isActive(link.href);
-                            return (
-                                <li key={link.href}>
-                                    <Link
-                                        href={link.href}
-                                        className={`font-['Cinzel'] text-[10px] tracking-[0.15em] uppercase px-3.5 py-1.5 transition-colors whitespace-nowrap block ${
-                                            active
-                                                ? "text-[#ddd4b0] font-semibold"
-                                                : "text-[#9a8c7e] hover:text-[#ddd4b0]"
-                                        }`}
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            );
-                        })}
-                        <li>
-                            <a
-                                href="https://discord.gg/dTRaBUNY"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="font-['Cinzel'] text-[10px] tracking-[0.15em] uppercase px-3.5 py-1.5 transition-colors whitespace-nowrap text-[#7289da] hover:text-[#99aaf0] flex items-center gap-1.5"
-                            >
-                                <i className="fa-brands fa-discord"></i> Discord
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                    <UserMenu />
+
+                    {/* Mobile Toggle Button */}
+                    <button
+                        type="button"
+                        onClick={() => setIsOpen((prev) => !prev)}
+                        className="lg:hidden text-[#b8b098] hover:text-[#ddd4b0] p-2 focus:outline-none"
+                        aria-expanded={isOpen}
+                        aria-label="Toggle navigation menu"
+                    >
+                        <i
+                            className={`fa-solid ${isOpen ? "fa-xmark" : "fa-bars"} text-lg`}
+                        ></i>
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu Dropdown */}

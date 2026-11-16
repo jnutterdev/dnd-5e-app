@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Navigation from "@/components/nav";
-import Footer from "@/components/footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -45,9 +43,7 @@ export default function RootLayout({
                     }}
                     aria-hidden="true"
                 />
-                <Navigation />
                 {children}
-                <Footer />
             </body>
         </html>
     );
