@@ -97,7 +97,7 @@ src/
 
 ### `src/proxy.ts`
 
-Next.js 16 replaces `middleware.ts` with `proxy.ts`. It runs on the Node.js runtime by default, and `runtime` can't be set. Use `getSessionCookie(request)` from `better-auth/cookies`. Every route is protected except `/sign-in`, `/api/auth/*`, and static assets (`_next/*`, images, favicon). If the cookie is missing, redirect to `/sign-in?next=<path>`. This check only looks for the cookie; it doesn't confirm the session is valid.
+Next.js 16 replaces `middleware.ts` with `proxy.ts`. It runs on the Node.js runtime by default, and `runtime` can't be set. Use `getSessionCookie(request)` from `better-auth/cookies`. Every route is protected except `/sign-in`, `/api/auth/*`, `/terms` and `/privacy` (once added), and static assets (`_next/*`, images, favicon). If the cookie is missing, redirect to `/sign-in?next=<path>`. This check only looks for the cookie; it doesn't confirm the session is valid.
 
 ## 6. Admin Bootstrap
 
@@ -173,6 +173,7 @@ All checks run on the server, using the full session from `auth.api.getSession({
 
 ## 12. Future Work
 
+- **Terms of Service and Privacy Policy pages (required before launch):** Discord's developer portal asks for links to both for the OAuth app. Add `/terms` and `/privacy` and set the URLs in the portal. Both must be **public**, so add them to the `proxy.ts` exclusions alongside `/sign-in`. The privacy policy should cover what we store from Discord (username, email, avatar, Discord user ID, OAuth tokens), the session cookies, and the future newsletter opt-in.
 - **Session-update newsletter:** an opt-in checkbox (e.g. on first sign-in or in profile settings). Having an email on file is not consent, so this needs its own fields, e.g. `User.newsletterOptIn Boolean @default(false)` and `User.newsletterOptInAt DateTime?`, plus an unsubscribe link in every email. Discord emails can change. Check whether Better Auth refreshes `User.email` from Discord on each sign-in (it may need an `overrideUserInfoOnSignIn`-style option), so we don't email a stale address.
 - **DM application/vetting flow** for creating new campaigns.
 - **Signed-out content:** decide what, if anything, visitors can see beyond the splash page.
